@@ -49,7 +49,8 @@ public class MineStratorClient {
     }
 
     public CompletableFuture<Boolean> sendCommand(String command) {
-        if (!isConfigured()) return CompletableFuture.completedFuture(false);
+        if (!isConfigured())
+            return CompletableFuture.completedFuture(false);
         if (serverId == null || serverId.isEmpty() || serverId.equals("YOUR_SERVER_ID_HERE")) {
             logger.warning("MineStrator Server ID is not configured properly!");
             return CompletableFuture.completedFuture(false);
@@ -71,7 +72,8 @@ public class MineStratorClient {
                     if (response.statusCode() >= 200 && response.statusCode() < 300) {
                         return true;
                     } else {
-                        logger.warning("Failed to execute MineStrator API request. HTTP Status: " + response.statusCode());
+                        logger.warning(
+                                "Failed to execute MineStrator API request. HTTP Status: " + response.statusCode());
                         logger.warning("Response: " + response.body());
                         return false;
                     }
@@ -91,7 +93,8 @@ public class MineStratorClient {
     }
 
     public CompletableFuture<JsonObject> createServer(String name, int cpu, int ram, int location, int idEgg) {
-        if (!isConfigured()) return CompletableFuture.completedFuture(null);
+        if (!isConfigured())
+            return CompletableFuture.completedFuture(null);
         if (myboxId == null || myboxId.isEmpty() || myboxId.equals("YOUR_MYBOX_ID_HERE")) {
             logger.warning("MineStrator MyBox ID is not configured properly!");
             return CompletableFuture.completedFuture(null);
@@ -130,7 +133,8 @@ public class MineStratorClient {
     }
 
     public void connectToConsole() {
-        if (!isConfigured()) return;
+        if (!isConfigured())
+            return;
         if (userId == null || userId.isEmpty() || userId.equals("YOUR_USER_ID_HERE")) {
             logger.warning("MineStrator User ID is not configured properly for WebSocket.");
             return;
@@ -214,7 +218,7 @@ public class MineStratorClient {
                 JsonObject message = JsonParser.parseString(data.toString()).getAsJsonObject();
                 if (message.has("event")) {
                     String event = message.get("event").getAsString();
-                    
+
                     if (event.equals("auth success")) {
                         logger.info("Successfully authenticated to MineStrator WebSocket console!");
                         // Request old logs

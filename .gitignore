@@ -1,7 +1,6 @@
 # User-specific stuff
-.idea/
-.vscode/
-.temp_api/
+.idea
+.vscode
 
 *.iml
 *.ipr
