@@ -2,6 +2,7 @@ package fr.heavencube.actionsstrator.commands;
 
 import fr.heavencube.actionsstrator.api.MineStratorClient;
 import fr.heavencube.actionsstrator.utils.Messages;
+import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +13,10 @@ public class StopCommand extends Command {
 
     private final MineStratorClient client;
 
+    public static void register(Server server, MineStratorClient client) {
+        server.getCommandMap().register("actionsstrator", new StopCommand(client));
+    }
+
     public StopCommand(MineStratorClient client) {
         super("msstop", "Stop the server via MineStrator API", "/msstop", List.of());
         this.client = client;
@@ -20,7 +25,10 @@ public class StopCommand extends Command {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-        if (!sender.hasPermission("actionsstrator.stop")) { Messages.send(sender, Messages.NO_PERMISSION); return true; }
+        if (!sender.hasPermission("actionsstrator.stop")) {
+            Messages.send(sender, Messages.NO_PERMISSION); 
+            return true;
+        }
 
         Messages.send(sender, Messages.STOP_SENDING);
         client.sendPowerAction("stop").thenAccept(success -> {

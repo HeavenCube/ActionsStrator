@@ -2,6 +2,7 @@ package fr.heavencube.actionsstrator.commands;
 
 import fr.heavencube.actionsstrator.api.MineStratorClient;
 import fr.heavencube.actionsstrator.utils.Messages;
+import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +13,10 @@ public class RestartCommand extends Command {
 
     private final MineStratorClient client;
 
+    public static void register(Server server, MineStratorClient client) {
+        server.getCommandMap().register("actionsstrator", new RestartCommand(client));
+    }
+
     public RestartCommand(MineStratorClient client) {
         super("msrestart", "Restart the server via MineStrator API", "/msrestart", List.of());
         this.client = client;
@@ -20,7 +25,10 @@ public class RestartCommand extends Command {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-        if (!sender.hasPermission("actionsstrator.restart")) { Messages.send(sender, Messages.NO_PERMISSION); return true; }
+        if (!sender.hasPermission("actionsstrator.restart")) {
+            Messages.send(sender, Messages.NO_PERMISSION); 
+            return true;
+        }
 
         Messages.send(sender, Messages.RESTART_SENDING);
         client.sendPowerAction("restart").thenAccept(success -> {
