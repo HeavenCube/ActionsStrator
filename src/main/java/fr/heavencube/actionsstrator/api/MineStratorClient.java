@@ -73,12 +73,4 @@ public class MineStratorClient {
                     return false;
                 });
     }
-
-    public CompletableFuture<Boolean> stopServer() {
-        return sendPowerAction("stop");
-    }
-
-    public CompletableFuture<Boolean> restartServer() {
-        return sendPowerAction("restart");
-    }
 }

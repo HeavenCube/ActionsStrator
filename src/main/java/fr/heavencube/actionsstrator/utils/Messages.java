@@ -15,6 +15,11 @@ public class Messages {
         public static final String STOP_SENDING = PREFIX + "<c:#EAC435>Sending stop signal to MineStrator...</c>";
         public static final String STOP_SUCCESS = PREFIX + "<c:#009B72>Stop signal successfully sent!</c>";
         public static final String STOP_FAILED = PREFIX + "<c:#F95C5E>Failed to send stop signal. Check console for details.</c>";
+        // KILL MESSAGES
+        public static final String KILL_SENDING = PREFIX + "<c:#EAC435>Sending kill signal to MineStrator...</c>";
+        public static final String KILL_SUCCESS = PREFIX + "<c:#009B72>Kill signal successfully sent!</c>";
+        public static final String KILL_FAILED = PREFIX + "<c:#F95C5E>Failed to send kill signal. Check console for details.</c>";
+        
         /**
          * Send a parsed MiniMessage string to the sender.
          */

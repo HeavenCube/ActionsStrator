@@ -18,6 +18,7 @@ public class ActionsStrator extends JavaPlugin {
 
         getServer().getCommandMap().register("actionsstrator",new fr.heavencube.actionsstrator.commands.RestartCommand(apiClient));
         getServer().getCommandMap().register("actionsstrator",new fr.heavencube.actionsstrator.commands.StopCommand(apiClient));
+        getServer().getCommandMap().register("actionsstrator",new fr.heavencube.actionsstrator.commands.KillCommand(apiClient));
     }
 
     @Override

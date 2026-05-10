@@ -22,7 +22,7 @@ public class RestartCommand extends Command {
         if (!sender.hasPermission("actionsstrator.restart")) { Messages.send(sender, Messages.NO_PERMISSION);return true;}
 
         Messages.send(sender, Messages.RESTART_SENDING);
-        client.restartServer().thenAccept(success -> {
+        client.sendPowerAction("restart").thenAccept(success -> {
             if (success) Messages.send(sender, Messages.RESTART_SUCCESS);
             else Messages.send(sender, Messages.RESTART_FAILED);
         });

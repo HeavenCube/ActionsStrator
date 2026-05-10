@@ -22,7 +22,7 @@ public class StopCommand extends Command {
         if (!sender.hasPermission("actionsstrator.stop")) { Messages.send(sender, Messages.NO_PERMISSION);return true;}
 
         Messages.send(sender, Messages.STOP_SENDING);
-        client.stopServer().thenAccept(success -> {
+        client.sendPowerAction("stop").thenAccept(success -> {
             if (success) Messages.send(sender, Messages.STOP_SUCCESS);
             else Messages.send(sender, Messages.STOP_FAILED);
         });
