@@ -28,6 +28,7 @@ Après le premier démarrage, éditez `plugins/ActionsStrator/config.yml` et ren
 ```yaml
 # ActionsStrator Configuration File
 # -----------------------------------------------------------------------------------------------------------
+
 # MineStrator API Key
 # You can generate one on your MineStrator panel
 # 🔗 Link: https://minestrator.com/my/account?section=api
@@ -37,6 +38,7 @@ api_key: "YOUR_API_KEY_HERE"
 # The ID of the server you want to control (you can find this in your server URL)
 # 🔗 Link: https://minestrator.com/my/dashboard
 server_id: "YOUR_SERVER_ID_HERE"
+
 # -----------------------------------------------------------------------------------------------------------
 
 ```

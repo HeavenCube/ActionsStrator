@@ -13,3 +13,6 @@ permissions:
   actionsstrator.stop:
     description: Allows using /msstop
     default: op
+  actionsstrator.kill:
+    description: Allows using /mskill
+    default: op
