@@ -20,6 +20,7 @@ public class MineStratorClient {
     private final HttpClient httpClient;
     private final Logger logger;
     private final Gson gson;
+    private ServerInfo cachedServerInfo;
 
     public MineStratorClient(String apiKey, String serverId, Logger logger) {
         this.apiKey = apiKey;
@@ -29,6 +30,7 @@ public class MineStratorClient {
             .connectTimeout(TIMEOUT)
                 .build();
         this.gson = new Gson();
+        this.cachedServerInfo = null;
     }
 
     private boolean isConfigured() {
@@ -135,8 +137,13 @@ public class MineStratorClient {
                             String myboxName = getNestedString(data, "mybox", "name");
                             String offerName = getNestedString(data, "offer", "name");
                             String serverName = getNestedString(data, "server", "name");
+                            
+                            JsonObject powerActionMessages = new JsonObject();
+                            if (data.has("settings") && data.getAsJsonObject("settings").has("poweraction_message")) {
+                                powerActionMessages = data.getAsJsonObject("settings").getAsJsonObject("poweraction_message");
+                            }
 
-                            return new ServerInfo(myboxName, offerName, serverName);
+                            return new ServerInfo(myboxName, offerName, serverName, powerActionMessages);
                         } catch (Exception e) {
                             logger.warning("Failed to parse server info response: " + e.getMessage());
                             return null;
@@ -146,21 +153,54 @@ public class MineStratorClient {
                         return null;
                     }
                 })
+                .thenApply(serverInfo -> {
+                    this.cachedServerInfo = serverInfo;
+                    return serverInfo;
+                })
                 .exceptionally(ex -> {
                     logger.severe("An error occurred while fetching server info: " + ex.getMessage());
                     return null;
                 });
     }
 
+    public boolean isActionAvailable(String action) {
+        // Actions: restart, restart10, stop, stop10, kill
+        // Since we don't have live serverInfo here, we rely on the try-catch from sendPowerAction
+        // This is a basic check - a 404 or timeout indicates the action isn't configured
+        return true; // Will be caught by sendPowerAction failure
+    }
+
+    public boolean isActionConfigured(String actionType) {
+        if (cachedServerInfo == null) {
+            return true; // If we don't have cached info, assume available (will fail with proper error if not)
+        }
+        
+        // Map action types to their base names for the API
+        // e.g. "restart10" maps to "restart", "stop10" maps to "stop"
+        String baseActionType = actionType.replaceAll("10$", "");
+        
+        return cachedServerInfo.isActionConfigured(baseActionType);
+    }
+
     public static class ServerInfo {
         public final String myboxName;
         public final String offerName;
         public final String serverName;
+        public final JsonObject powerActionMessages;
 
-        public ServerInfo(String myboxName, String offerName, String serverName) {
+        public ServerInfo(String myboxName, String offerName, String serverName, JsonObject powerActionMessages) {
             this.myboxName = myboxName;
             this.offerName = offerName;
             this.serverName = serverName;
+            this.powerActionMessages = powerActionMessages;
+        }
+        
+        public boolean isActionConfigured(String actionType) {
+            if (powerActionMessages == null || !powerActionMessages.has(actionType)) {
+                return false;
+            }
+            String message = powerActionMessages.get(actionType).getAsString();
+            return message != null && !message.trim().isEmpty();
         }
     }
 }

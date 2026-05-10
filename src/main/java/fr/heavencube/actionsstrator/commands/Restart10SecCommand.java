@@ -30,6 +30,11 @@ public class Restart10SecCommand extends Command {
             return true;
         }
 
+        if (!client.isActionConfigured("restart10")) {
+            Messages.send(sender, Messages.ACTION_NOT_CONFIGURED);
+            return true;
+        }
+
         Messages.send(sender, Messages.RESTART_SENDING);
         client.sendPowerAction("restart10").thenAccept(success -> {
             if (success) Messages.send(sender, Messages.RESTART_SUCCESS);

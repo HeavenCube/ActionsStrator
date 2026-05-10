@@ -30,6 +30,11 @@ public class Stop10SecCommand extends Command {
             return true;
         }
 
+        if (!client.isActionConfigured("stop10")) {
+            Messages.send(sender, Messages.ACTION_NOT_CONFIGURED);
+            return true;
+        }
+
         Messages.send(sender, Messages.STOP_SENDING);
         client.sendPowerAction("stop10").thenAccept(success -> {
             if (success) Messages.send(sender, Messages.STOP_SUCCESS);
