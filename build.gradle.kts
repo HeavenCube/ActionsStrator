@@ -8,40 +8,44 @@ group = "fr.heavencube.actionsstrator"
 version = "1.0.0-SNAPSHOT"
 
 repositories {
-  mavenCentral()
-  maven("https://repo.papermc.io/repository/maven-public/")
-  maven {
-    name = "papermc"
-    url = uri("https://repo.papermc.io/repository/maven-public/")
-    }
+    mavenCentral()
+    maven("https://repo.papermc.io/repository/maven-public/")
 }
 
 dependencies {
-  compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
+    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
 }
 
 java {
-  toolchain.languageVersion.set(JavaLanguageVersion.of(25))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
 
 tasks {
     compileJava {
         options.encoding = Charsets.UTF_8.name()
     }
-    runServer {
-        dependsOn(shadowJar)
-        minecraftVersion("26.1.2")
-    }
+    
     processResources {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        val props = mapOf("version" to project.version.toString())
+        inputs.properties(props)
         filteringCharset = Charsets.UTF_8.name()
-    }
-    shadowJar {
-        archiveFileName.set("${project.name}-${project.version}.jar")
-        doLast {
-            archiveFile.get().asFile.copyTo(layout.projectDirectory.file("output/${project.name}-${project.version}.jar").asFile, true)
+        filesMatching("paper-plugin.yml") {
+            expand(props)
         }
     }
+    
+    runServer {
+        minecraftVersion("1.21.4")
+    }
+
+    jar {
+        archiveClassifier.set("original")
+    }
+
+    shadowJar {
+        archiveClassifier.set("")
+    }
+
     build {
         dependsOn(shadowJar)
     }
