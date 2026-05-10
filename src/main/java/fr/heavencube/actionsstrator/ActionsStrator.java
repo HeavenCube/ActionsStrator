@@ -32,7 +32,7 @@ public class ActionsStrator extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Cleanup if needed
+
     }
 
     private void displayServerInfo(MineStratorClient.ServerInfo serverInfo) {
