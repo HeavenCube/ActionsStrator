@@ -181,7 +181,7 @@ public class MineStratorClient {
 
     private void connectWebSocket(String socketUrl, String token) {
         httpClient.newWebSocketBuilder()
-                .header("Origin", "https://minestrator.com/")
+                .header("Origin", "https://minestrator.com")
                 .header("User-Agent", "ActionsStrator-Plugin")
                 .buildAsync(URI.create(socketUrl), new ConsoleWebSocketListener(token))
                 .thenAccept(ws -> {

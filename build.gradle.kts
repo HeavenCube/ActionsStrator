@@ -1,9 +1,19 @@
 plugins {
     kotlin("jvm") version "2.3.21"
+    id("com.gradleup.shadow") version "9.4.1"
 }
 
+kotlin {
+    jvmToolchain(25)
+}
+
+// Change to true when releasing
+val release = false
+val majorVersion = "1.0.0"
+val minorVersion = if (release) "Release" else "SNAPSHOT-" + (System.getenv("BUILD_NUMBER") ?: "local")
+
 group = "fr.heavencube.actionsstrator"
-version = "1.0.0-SNAPSHOT"
+version = "$majorVersion-$minorVersion"
 
 repositories {
   maven {
@@ -16,15 +26,15 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
 }
 
-tasks.processResources {
-    val props = mapOf("version" to project.version.toString())
-    inputs.properties(props)
-    filteringCharset = Charsets.UTF_8.name()
-    filesMatching("paper-plugin.yml") {
-        expand(props)
+tasks {
+    shadowJar {
+        archiveFileName.set("ActionsStrator-${rootProject.version}.jar")
     }
-}
-
-kotlin {
-    jvmToolchain(25)
+    processResources {
+        val pluginVersion = rootProject.version.toString()
+        inputs.property("version", pluginVersion)
+        filesMatching("paper-plugin.yml") {
+            expand("version" to pluginVersion)
+        }
+    }
 }
