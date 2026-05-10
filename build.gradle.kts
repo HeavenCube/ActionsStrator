@@ -44,7 +44,7 @@ tasks.register<Copy>("devJar") {
     val shadowJarTask = tasks.named<Jar>("shadowJar")
     from(layout.projectDirectory.dir("build/libs")) {
         rename { fileName: String ->
-            fileName.replace(shadowJarTask.get().archiveFileName.get(), "${shadowJarTask.get().archiveBaseName.get()}-dev.jar")
+            fileName.replace(shadowJarTask.get().archiveFileName.get(), "${shadowJarTask.get().archiveBaseName.get()}-SNAPSHOT.jar")
         }
     }
     include(shadowJarTask.get().archiveFileName.get())
