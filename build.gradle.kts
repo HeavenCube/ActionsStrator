@@ -31,23 +31,3 @@ tasks.processResources {
         expand(props)
     }
 }
-
-tasks.named<Jar>("jar") {
-    destinationDirectory.set(file("build"))
-}
-
-tasks.named<Jar>("shadowJar") {
-    archiveClassifier.set("")
-}
-
-tasks.register<Copy>("devJar") {
-    val shadowJarTask = tasks.named<Jar>("shadowJar")
-    from(layout.projectDirectory.dir("build/libs")) {
-        rename { fileName: String ->
-            fileName.replace(shadowJarTask.get().archiveFileName.get(), "${shadowJarTask.get().archiveBaseName.get()}-SNAPSHOT.jar")
-        }
-    }
-    include(shadowJarTask.get().archiveFileName.get())
-    into(file("run/plugins"))
-    dependsOn(tasks.named("build"))
-}

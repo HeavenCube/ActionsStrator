@@ -5,13 +5,6 @@ api-version: '1.21'
 description: A Paper plugin that uses the MineStrator API to manage the server.
 authors:
 - Noltox
-commands:
-  msrestart:
-    description: Restart the server via MineStrator API.
-    permission: actionsstrator.restart
-  msstop:
-    description: Stop the server via MineStrator API.
-    permission: actionsstrator.stop
 permissions:
   actionsstrator.restart:
     description: Allows using /msrestart

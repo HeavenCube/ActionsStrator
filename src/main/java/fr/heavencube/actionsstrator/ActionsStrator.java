@@ -20,12 +20,26 @@ public class ActionsStrator extends JavaPlugin {
 
         MineStratorCommands commandExecutor = new MineStratorCommands(apiClient);
 
-        if (getCommand("msrestart") != null) {
-            getCommand("msrestart").setExecutor(commandExecutor);
-        }
-        if (getCommand("msstop") != null) {
-            getCommand("msstop").setExecutor(commandExecutor);
-        }
+        org.bukkit.command.Command msrestart = new org.bukkit.command.Command("msrestart") {
+            @Override
+            public boolean execute(org.bukkit.command.CommandSender sender, String commandLabel, String[] args) {
+                return commandExecutor.onCommand(sender, this, commandLabel, args);
+            }
+        };
+        msrestart.setDescription("Restart the server via MineStrator API");
+        msrestart.setPermission("actionsstrator.restart");
+
+        org.bukkit.command.Command msstop = new org.bukkit.command.Command("msstop") {
+            @Override
+            public boolean execute(org.bukkit.command.CommandSender sender, String commandLabel, String[] args) {
+                return commandExecutor.onCommand(sender, this, commandLabel, args);
+            }
+        };
+        msstop.setDescription("Stop the server via MineStrator API");
+        msstop.setPermission("actionsstrator.stop");
+
+        getServer().getCommandMap().register("actionsstrator", msrestart);
+        getServer().getCommandMap().register("actionsstrator", msstop);
 
         getLogger().info("ActionsStrator has been enabled!");
     }
