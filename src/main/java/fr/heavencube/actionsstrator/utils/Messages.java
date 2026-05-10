@@ -7,6 +7,7 @@ public class Messages {
     // COMMON MESSAGES
     public static final String PREFIX = "<c:#009B72><b>AᴄᴛɪᴏɴѕSᴛʀᴀᴛᴏʀ</b></c> <dark_gray>|</dark_gray> ";
     public static final String NO_PERMISSION = PREFIX + "<c:#F95C5E>You do not have permission to use this command.</c>";
+    public static final String ACTION_NOT_CONFIGURED = PREFIX + "<c:#F95C5E>This action is not configured on your MineBoard server settings.</c>";
     // RESTART MESSAGES
     public static final String RESTART_SENDING = PREFIX + "<c:#EAC435>Sending restart signal to MineStrator...</c>";
     public static final String RESTART_SUCCESS = PREFIX + "<c:#009B72>Restart signal successfully sent!</c>";
@@ -19,8 +20,6 @@ public class Messages {
     public static final String KILL_SENDING = PREFIX + "<c:#EAC435>Sending kill signal to MineStrator...</c>";
     public static final String KILL_SUCCESS = PREFIX + "<c:#009B72>Kill signal successfully sent!</c>";
     public static final String KILL_FAILED = PREFIX + "<c:#F95C5E>Failed to send kill signal. Check console for details.</c>";
-    // ACTION NOT CONFIGURED
-    public static final String ACTION_NOT_CONFIGURED = PREFIX + "<c:#F95C5E>This action is not configured on your MineBoard server settings.</c>";
     
 
     /**
