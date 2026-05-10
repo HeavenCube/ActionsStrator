@@ -161,6 +161,7 @@ public class MineStratorClient {
                                 if (srv.get("id").getAsString().equals(serverId)) {
                                     String socketUrl = srv.get("socket").getAsString();
                                     String token = srv.get("token").getAsString();
+                                    logger.info("Connecting to MineStrator WebSocket at URL: " + socketUrl);
                                     connectWebSocket(socketUrl, token);
                                     return;
                                 }
