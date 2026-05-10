@@ -19,18 +19,12 @@ public class StopCommand extends Command {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-        if (!sender.hasPermission("actionsstrator.stop")) {
-            Messages.send(sender, Messages.NO_PERMISSION);
-            return true;
-        }
+        if (!sender.hasPermission("actionsstrator.stop")) { Messages.send(sender, Messages.NO_PERMISSION);return true;}
 
         Messages.send(sender, Messages.STOP_SENDING);
         client.stopServer().thenAccept(success -> {
-            if (success) {
-                Messages.send(sender, Messages.STOP_SUCCESS);
-            } else {
-                Messages.send(sender, Messages.STOP_FAILED);
-            }
+            if (success) Messages.send(sender, Messages.STOP_SUCCESS);
+            else Messages.send(sender, Messages.STOP_FAILED);
         });
         return true;
     }

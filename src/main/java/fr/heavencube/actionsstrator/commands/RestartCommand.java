@@ -19,18 +19,12 @@ public class RestartCommand extends Command {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-        if (!sender.hasPermission("actionsstrator.restart")) {
-            Messages.send(sender, Messages.NO_PERMISSION);
-            return true;
-        }
+        if (!sender.hasPermission("actionsstrator.restart")) { Messages.send(sender, Messages.NO_PERMISSION);return true;}
 
         Messages.send(sender, Messages.RESTART_SENDING);
         client.restartServer().thenAccept(success -> {
-            if (success) {
-                Messages.send(sender, Messages.RESTART_SUCCESS);
-            } else {
-                Messages.send(sender, Messages.RESTART_FAILED);
-            }
+            if (success) Messages.send(sender, Messages.RESTART_SUCCESS);
+            else Messages.send(sender, Messages.RESTART_FAILED);
         });
         return true;
     }
