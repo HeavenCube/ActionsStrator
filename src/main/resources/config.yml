@@ -1,8 +1,12 @@
 # ActionsStrator Configuration File
-# 
+#
 # MineStrator API Key
 # You can generate one on your MineStrator panel
 api_key: "YOUR_API_KEY_HERE"
+
+# MyBox ID
+# Required for server creation API
+mybox_id: "YOUR_MYBOX_ID_HERE"
 
 # Server ID
 # The ID of the server you want to control (you can find this in your server URL)
@@ -11,7 +15,3 @@ server_id: "YOUR_SERVER_ID_HERE"
 # User ID
 # Required for WebSocket console connection
 user_id: "YOUR_USER_ID_HERE"
-
-# MyBox ID
-# Required for server creation API
-mybox_id: "YOUR_MYBOX_ID_HERE"
