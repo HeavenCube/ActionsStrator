@@ -39,25 +39,18 @@ public class ActionsStrator extends JavaPlugin {
     }
 
     private void displayServerInfo(MineStratorClient.ServerInfo serverInfo) {
-        getLogger().info("╔════════════════════════════════════════════╗");
-        getLogger().info("║        ActionsStrator v" + getPluginMeta().getVersion() + " - Plugin Enabled        ║");
-        getLogger().info("╠════════════════════════════════════════════╣");
-        getLogger().info("║  🖥️  Server      : " + padRight(serverInfo.serverName, 28) + " ║");
-        getLogger().info("║  📦 Offer       : " + padRight(serverInfo.offerName, 29) + " ║");
-        getLogger().info("║  ☁️  MyBox       : " + padRight(serverInfo.myboxName, 29) + " ║");
-        getLogger().info("╠════════════════════════════════════════════╣");
-        getLogger().info("║  ✓ Plugin successfully connected to API!   ║");
-        getLogger().info("╚════════════════════════════════════════════╝");
-    }
-
-    private String padRight(String str, int length) {
-        if (str.length() >= length) {
-            return str.substring(0, Math.min(str.length(), length));
-        }
-        StringBuilder sb = new StringBuilder(str);
-        while (sb.length() < length) {
-            sb.append(" ");
-        }
-        return sb.toString();
+        String line = "─".repeat(55);
+        
+        getLogger().info("");
+        getLogger().info("╭" + line + "╮");
+        getLogger().info("│ ActionsStrator v" + getPluginMeta().getVersion());
+        getLogger().info("├" + line + "┤");
+        getLogger().info("│ 🖥️  MyBox  → " + serverInfo.myboxName);
+        getLogger().info("│ 📦 Offer  → " + serverInfo.offerName);
+        getLogger().info("│ 🔎  Server → " + serverInfo.serverName);
+        getLogger().info("├" + line + "┤");
+        getLogger().info("│ ✓ Connected to MineStrator API successfully");
+        getLogger().info("╰" + line + "╯");
+        getLogger().info("");
     }
 }
