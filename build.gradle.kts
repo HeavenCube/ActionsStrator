@@ -35,11 +35,11 @@ tasks {
     }
     
     runServer {
-        minecraftVersion("1.21.4")
+        minecraftVersion("26.1.2")
     }
 
     jar {
-        archiveClassifier.set("original")
+        enabled = false
     }
 
     shadowJar {
