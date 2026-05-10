@@ -9,6 +9,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 
 public class MineStratorClient {
 
@@ -72,5 +73,68 @@ public class MineStratorClient {
                     logger.severe("An error occurred while communicating with MineStrator API: " + ex.getMessage());
                     return false;
                 });
+    }
+
+    public CompletableFuture<ServerInfo> getServerInfo() {
+        if (!isConfigured())
+            return CompletableFuture.completedFuture(null);
+        if (serverId == null || serverId.isEmpty() || serverId.equals("YOUR_SERVER_ID_HERE")) {
+            logger.warning("MineStrator Server ID is not configured properly!");
+            return CompletableFuture.completedFuture(null);
+        }
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "server/" + serverId))
+                .timeout(Duration.ofSeconds(10))
+                .header("Authorization", "Bearer " + apiKey)
+                .GET()
+                .build();
+
+        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(response -> {
+                    if (response.statusCode() >= 200 && response.statusCode() < 300) {
+                        try {
+                            JsonObject json = gson.fromJson(response.body(), JsonObject.class);
+                            JsonObject data = json.getAsJsonObject("api").getAsJsonObject("data");
+                            
+                            String myboxName = getJsonString(data, "mybox", "name");
+                            String offerName = getJsonString(data, "offer", "name");
+                            String serverName = getJsonString(data, "server", "name");
+                            
+                            return new ServerInfo(myboxName, offerName, serverName);
+                        } catch (Exception e) {
+                            logger.warning("Failed to parse server info response: " + e.getMessage());
+                            return null;
+                        }
+                    } else {
+                        logger.warning("Failed to fetch server info. HTTP Status: " + response.statusCode());
+                        return null;
+                    }
+                })
+                .exceptionally(ex -> {
+                    logger.severe("An error occurred while fetching server info: " + ex.getMessage());
+                    return null;
+                });
+    }
+
+    private String getJsonString(JsonObject parent, String... path) {
+        JsonElement current = parent;
+        for (String key : path) {
+            if (current == null || !current.isJsonObject()) return "Unknown";
+            current = current.getAsJsonObject().get(key);
+        }
+        return current != null ? current.getAsString() : "Unknown";
+    }
+
+    public static class ServerInfo {
+        public final String myboxName;
+        public final String offerName;
+        public final String serverName;
+
+        public ServerInfo(String myboxName, String offerName, String serverName) {
+            this.myboxName = myboxName;
+            this.offerName = offerName;
+            this.serverName = serverName;
+        }
     }
 }
