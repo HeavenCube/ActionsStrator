@@ -1,7 +1,5 @@
 plugins {
-    java
-    id("xyz.jpenilla.run-paper") version "3.0.2"
-    id("com.gradleup.shadow") version "9.4.1"
+    kotlin("jvm") version "2.3.21"
 }
 
 group = "fr.heavencube.actionsstrator"
@@ -16,37 +14,19 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
 }
 
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
+tasks.jar {
+    archiveVersion.set("")
 }
 
-tasks {
-    compileJava {
-        options.encoding = Charsets.UTF_8.name()
+tasks.processResources {
+    val props = mapOf("version" to project.version.toString())
+    inputs.properties(props)
+    filteringCharset = Charsets.UTF_8.name()
+    filesMatching("paper-plugin.yml") {
+        expand(props)
     }
-    
-    processResources {
-        val props = mapOf("version" to project.version.toString())
-        inputs.properties(props)
-        filteringCharset = Charsets.UTF_8.name()
-        filesMatching("paper-plugin.yml") {
-            expand(props)
-        }
-    }
-    
-    runServer {
-        minecraftVersion("26.1.2")
-    }
+}
 
-    jar {
-        enabled = false
-    }
-
-    shadowJar {
-        archiveClassifier.set("")
-    }
-
-    build {
-        dependsOn(shadowJar)
-    }
+kotlin {
+    jvmToolchain(25)
 }

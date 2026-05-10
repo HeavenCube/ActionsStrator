@@ -51,6 +51,9 @@ public class ActionsStrator extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (apiClient != null) {
+            apiClient.disconnectConsole();
+        }
         getLogger().info("ActionsStrator has been disabled!");
     }
 

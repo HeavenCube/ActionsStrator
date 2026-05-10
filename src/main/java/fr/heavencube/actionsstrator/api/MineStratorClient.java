@@ -181,6 +181,8 @@ public class MineStratorClient {
 
     private void connectWebSocket(String socketUrl, String token) {
         httpClient.newWebSocketBuilder()
+                .header("Origin", "https://minestrator.com/")
+                .header("User-Agent", "ActionsStrator-Plugin")
                 .buildAsync(URI.create(socketUrl), new ConsoleWebSocketListener(token))
                 .thenAccept(ws -> {
                     this.webSocket = ws;
@@ -189,6 +191,13 @@ public class MineStratorClient {
                     logger.severe("Failed to connect to WebSocket: " + ex.getMessage());
                     return null;
                 });
+    }
+
+    public void disconnectConsole() {
+        if (this.webSocket != null) {
+            this.webSocket.sendClose(WebSocket.NORMAL_CLOSURE, "Plugin disabled");
+            this.webSocket = null;
+        }
     }
 
     private void sendAuth(WebSocket ws, String token) {
@@ -249,6 +258,9 @@ public class MineStratorClient {
                             long memoryBytes = stats.get("memory_bytes").getAsLong();
                             double cpu = stats.get("cpu_absolute").getAsDouble();
                             String state = stats.get("state").getAsString();
+                            logger.info(
+                                    String.format("MineStrator Server Stats -> State: %s | CPU: %.2f%% | RAM: %d MB",
+                                            state, cpu, memoryBytes / (1024 * 1024)));
                             // Left undocumented logic to process stats
                         }
                     }
