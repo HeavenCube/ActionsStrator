@@ -48,7 +48,7 @@ public class MineStratorClient {
         return true;
     }
 
-    public CompletableFuture<Boolean> sendCommand(String command) {
+    public CompletableFuture<Boolean> sendPowerAction(String poweraction) {
         if (!isConfigured())
             return CompletableFuture.completedFuture(false);
         if (serverId == null || serverId.isEmpty() || serverId.equals("YOUR_SERVER_ID_HERE")) {
@@ -57,10 +57,10 @@ public class MineStratorClient {
         }
 
         JsonObject body = new JsonObject();
-        body.addProperty("command", command);
+        body.addProperty("poweraction", poweraction);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "server/" + serverId + "/command"))
+                .uri(URI.create(BASE_URL + "server/" + serverId + "/poweraction"))
                 .timeout(Duration.ofSeconds(10))
                 .header("Authorization", "Bearer " + apiKey)
                 .header("Content-Type", "application/json")
@@ -85,11 +85,11 @@ public class MineStratorClient {
     }
 
     public CompletableFuture<Boolean> stopServer() {
-        return sendCommand("stop");
+        return sendPowerAction("stop");
     }
 
     public CompletableFuture<Boolean> restartServer() {
-        return sendCommand("restart");
+        return sendPowerAction("restart");
     }
 
     public CompletableFuture<JsonObject> createServer(String name, int cpu, int ram, int location, int idEgg) {
