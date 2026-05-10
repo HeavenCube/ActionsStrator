@@ -23,11 +23,26 @@ dependencies {
 java {
   toolchain.languageVersion.set(JavaLanguageVersion.of(25))
 }
-tasks.processResources {
-    val props = mapOf("version" to version)
-    inputs.properties(props)
-    filteringCharset = "UTF-8"
-    filesMatching("paper-plugin.yml") {
-        expand(props)
+
+tasks {
+    compileJava {
+        options.encoding = Charsets.UTF_8.name()
+    }
+    runServer {
+        dependsOn(shadowJar)
+        minecraftVersion("26.1.2")
+    }
+    processResources {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        filteringCharset = Charsets.UTF_8.name()
+    }
+    shadowJar {
+        archiveFileName.set("${project.name}-${project.version}.jar")
+        doLast {
+            archiveFile.get().asFile.copyTo(layout.projectDirectory.file("output/${project.name}-${project.version}.jar").asFile, true)
+        }
+    }
+    build {
+        dependsOn(shadowJar)
     }
 }
