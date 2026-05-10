@@ -2,6 +2,7 @@
 .idea/
 .vscode/
 bin/
+.instructions.md
 
 *.iml
 *.ipr
