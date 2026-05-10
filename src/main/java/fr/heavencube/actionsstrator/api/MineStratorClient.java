@@ -7,7 +7,6 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
@@ -63,7 +62,8 @@ public class MineStratorClient {
                     if (response.statusCode() >= 200 && response.statusCode() < 300) {
                         return true;
                     } else {
-                        logger.warning("Failed to execute MineStrator API request. HTTP Status: " + response.statusCode());
+                        logger.warning(
+                                "Failed to execute MineStrator API request. HTTP Status: " + response.statusCode());
                         logger.warning("Response: " + response.body());
                         return false;
                     }

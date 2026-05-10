@@ -1,13 +1,11 @@
 package fr.heavencube.actionsstrator.commands;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
-
 import fr.heavencube.actionsstrator.api.MineStratorClient;
+import fr.heavencube.actionsstrator.utils.Messages;
 
 public class StopCommand extends Command {
 
@@ -15,24 +13,23 @@ public class StopCommand extends Command {
 
     public StopCommand(MineStratorClient client) {
         super("msstop", "Stop the server via MineStrator API", "/msstop", List.of());
-        setPermission("actionsstrator.stop");
         this.client = client;
+        setPermission("actionsstrator.stop");
     }
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         if (!sender.hasPermission("actionsstrator.stop")) {
-            sender.sendMessage(Component.text("You do not have permission to use this command.", NamedTextColor.RED));
+            Messages.send(sender, Messages.NO_PERMISSION);
             return true;
         }
 
-        sender.sendMessage(Component.text("Sending stop signal to MineStrator...", NamedTextColor.YELLOW));
+        Messages.send(sender, Messages.STOP_SENDING);
         client.stopServer().thenAccept(success -> {
             if (success) {
-                sender.sendMessage(Component.text("Stop signal successfully sent!", NamedTextColor.GREEN));
+                Messages.send(sender, Messages.STOP_SUCCESS);
             } else {
-                sender.sendMessage(
-                        Component.text("Failed to send stop signal. Check console for details.", NamedTextColor.RED));
+                Messages.send(sender, Messages.STOP_FAILED);
             }
         });
         return true;
