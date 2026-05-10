@@ -15,8 +15,13 @@ public class ActionsStrator extends JavaPlugin {
 
         String apiKey = getConfig().getString("api_key");
         String serverId = getConfig().getString("server_id");
+        String userId = getConfig().getString("user_id");
+        String myboxId = getConfig().getString("mybox_id");
 
-        apiClient = new MineStratorClient(apiKey, serverId, getLogger());
+        apiClient = new MineStratorClient(apiKey, serverId, userId, myboxId, getLogger());
+        
+        // Connect to the WebSocket console
+        apiClient.connectToConsole();
 
         MineStratorCommands commandExecutor = new MineStratorCommands(apiClient);
 
