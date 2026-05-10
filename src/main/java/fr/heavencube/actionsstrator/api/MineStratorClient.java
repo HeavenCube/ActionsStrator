@@ -9,11 +9,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonElement;
 
 public class MineStratorClient {
 
     private static final String BASE_URL = "https://mine.sttr.io/";
+    private static final Duration TIMEOUT = Duration.ofSeconds(10);
 
     private final String apiKey;
     private final String serverId;
@@ -26,7 +26,7 @@ public class MineStratorClient {
         this.serverId = serverId;
         this.logger = logger;
         this.httpClient = HttpClient.newBuilder()
-                .connectTimeout(Duration.ofSeconds(10))
+            .connectTimeout(TIMEOUT)
                 .build();
         this.gson = new Gson();
     }
@@ -39,35 +39,31 @@ public class MineStratorClient {
         return true;
     }
 
-    public CompletableFuture<Boolean> sendPowerAction(String poweraction) {
-        if (!isConfigured())
-            return CompletableFuture.completedFuture(false);
+    private boolean isServerConfigured() {
         if (serverId == null || serverId.isEmpty() || serverId.equals("YOUR_SERVER_ID_HERE")) {
             logger.warning("MineStrator Server ID is not configured properly!");
-            return CompletableFuture.completedFuture(false);
+            return false;
         }
+        return true;
+    }
 
-        JsonObject body = new JsonObject();
-        body.addProperty("poweraction", poweraction);
+    private HttpRequest.Builder requestBuilder(String path) {
+        return HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + path))
+                .timeout(TIMEOUT)
+                .header("Authorization", "Bearer " + apiKey);
+    }
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "server/" + serverId + "/poweraction"))
-                .timeout(Duration.ofSeconds(10))
-                .header("Authorization", "Bearer " + apiKey)
-                .header("Content-Type", "application/json")
-                .PUT(HttpRequest.BodyPublishers.ofString(gson.toJson(body)))
-                .build();
-
-        return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+    private CompletableFuture<Boolean> handleBooleanResponse(CompletableFuture<HttpResponse<String>> responseFuture, String errorPrefix) {
+        return responseFuture
                 .thenApply(response -> {
                     if (response.statusCode() >= 200 && response.statusCode() < 300) {
                         return true;
-                    } else {
-                        logger.warning(
-                                "Failed to execute MineStrator API request. HTTP Status: " + response.statusCode());
-                        logger.warning("Response: " + response.body());
-                        return false;
                     }
+
+                    logger.warning(errorPrefix + response.statusCode());
+                    logger.warning("Response: " + response.body());
+                    return false;
                 })
                 .exceptionally(ex -> {
                     logger.severe("An error occurred while communicating with MineStrator API: " + ex.getMessage());
@@ -75,18 +71,57 @@ public class MineStratorClient {
                 });
     }
 
+    private String getNestedString(JsonObject parent, String... path) {
+        JsonObject current = parent;
+
+        for (int i = 0; i < path.length; i++) {
+            String key = path[i];
+
+            if (current == null || !current.has(key) || current.get(key).isJsonNull()) {
+                return "Unknown";
+            }
+
+            if (i == path.length - 1) {
+                return current.get(key).getAsString();
+            }
+
+            if (!current.get(key).isJsonObject()) {
+                return "Unknown";
+            }
+
+            current = current.getAsJsonObject(key);
+        }
+
+        return "Unknown";
+    }
+
+    public CompletableFuture<Boolean> sendPowerAction(String poweraction) {
+        if (!isConfigured())
+            return CompletableFuture.completedFuture(false);
+        if (!isServerConfigured()) {
+            return CompletableFuture.completedFuture(false);
+        }
+
+        JsonObject body = new JsonObject();
+        body.addProperty("poweraction", poweraction);
+
+        HttpRequest request = requestBuilder("server/" + serverId + "/poweraction")
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(gson.toJson(body)))
+                .build();
+
+        return handleBooleanResponse(httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString()),
+                "Failed to execute MineStrator API request. HTTP Status: ");
+    }
+
     public CompletableFuture<ServerInfo> getServerInfo() {
         if (!isConfigured())
             return CompletableFuture.completedFuture(null);
-        if (serverId == null || serverId.isEmpty() || serverId.equals("YOUR_SERVER_ID_HERE")) {
-            logger.warning("MineStrator Server ID is not configured properly!");
+        if (!isServerConfigured()) {
             return CompletableFuture.completedFuture(null);
         }
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "server/" + serverId))
-                .timeout(Duration.ofSeconds(10))
-                .header("Authorization", "Bearer " + apiKey)
+        HttpRequest request = requestBuilder("server/" + serverId)
                 .GET()
                 .build();
 
@@ -96,11 +131,11 @@ public class MineStratorClient {
                         try {
                             JsonObject json = gson.fromJson(response.body(), JsonObject.class);
                             JsonObject data = json.getAsJsonObject("api").getAsJsonObject("data");
-                            
-                            String myboxName = getJsonString(data, "mybox", "name");
-                            String offerName = getJsonString(data, "offer", "name");
-                            String serverName = getJsonString(data, "server", "name");
-                            
+
+                            String myboxName = getNestedString(data, "mybox", "name");
+                            String offerName = getNestedString(data, "offer", "name");
+                            String serverName = getNestedString(data, "server", "name");
+
                             return new ServerInfo(myboxName, offerName, serverName);
                         } catch (Exception e) {
                             logger.warning("Failed to parse server info response: " + e.getMessage());
@@ -115,15 +150,6 @@ public class MineStratorClient {
                     logger.severe("An error occurred while fetching server info: " + ex.getMessage());
                     return null;
                 });
-    }
-
-    private String getJsonString(JsonObject parent, String... path) {
-        JsonElement current = parent;
-        for (String key : path) {
-            if (current == null || !current.isJsonObject()) return "Unknown";
-            current = current.getAsJsonObject().get(key);
-        }
-        return current != null ? current.getAsString() : "Unknown";
     }
 
     public static class ServerInfo {

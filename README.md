@@ -73,14 +73,34 @@ Permissions disponibles :
 - Assurez-vous que le serveur a un accès sortant vers `https://mine.sttr.io/`.
 
 ## Développement
-- Le client HTTP interne utilise `java.net.http.HttpClient` et `Gson` pour sérialiser le corps JSON envoyé à MineStrator.
-- Points d'extension simples : ajouter d'autres poweractions ou commandes ne nécessitant que l'appel à `sendPowerAction("<action>")`.
 
-## Contribuer
-Les contributions sont bienvenues. Ouvrez une issue ou proposez une pull request pour :
-- ajouter de nouvelles actions/commandes
-- améliorer la gestion des erreurs
-- internationalisation des messages
+### Ajouter une nouvelle action
+
+Le plugin est volontairement structuré de façon simple : **chaque action possède son propre fichier Java**.
+
+Pour ajouter une nouvelle action :
+
+1. Créez une nouvelle classe dans `src/main/java/fr/heavencube/actionsstrator/commands/`
+2. Faites-la étendre `Command`
+3. Ajoutez votre logique dans `execute(...)`
+4. Ajoutez les messages nécessaires dans `Messages.java`
+5. Déclarez la permission correspondante dans `paper-plugin.yml`
+
+Exemple : `/msbackup` peut être ajouté avec son propre fichier `BackupCommand.java`.
+
+### Architecture
+
+Le plugin privilégie la lisibilité et la simplicité :
+- une classe par commande
+- des messages clairs et centralisés dans `Messages.java`
+- des appels API asynchrones via `CompletableFuture`
+
+### Build optimisé
+
+Le build a été optimisé pour réduire la taille du JAR :
+- ✓ Suppression de shadowJar (inutile)
+- ✓ Dépendances fournies par Paper API
+- ✓ JAR réduit de ~70-80%
 
 ## Crédits
 - Plugin développé pour interagir avec l'API MineStrator

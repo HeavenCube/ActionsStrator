@@ -4,7 +4,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import fr.heavencube.actionsstrator.api.MineStratorClient;
 
 public class ActionsStrator extends JavaPlugin {
-
     private MineStratorClient apiClient;
 
     @Override
@@ -14,11 +13,12 @@ public class ActionsStrator extends JavaPlugin {
         String apiKey = getConfig().getString("api_key");
         String serverId = getConfig().getString("server_id");
 
+        // Initialize API client
         apiClient = new MineStratorClient(apiKey, serverId, getLogger());
 
-        getServer().getCommandMap().register("actionsstrator",new fr.heavencube.actionsstrator.commands.RestartCommand(apiClient));
-        getServer().getCommandMap().register("actionsstrator",new fr.heavencube.actionsstrator.commands.StopCommand(apiClient));
-        getServer().getCommandMap().register("actionsstrator",new fr.heavencube.actionsstrator.commands.KillCommand(apiClient));
+    getServer().getCommandMap().register("actionsstrator", new fr.heavencube.actionsstrator.commands.RestartCommand(apiClient));
+    getServer().getCommandMap().register("actionsstrator", new fr.heavencube.actionsstrator.commands.StopCommand(apiClient));
+    getServer().getCommandMap().register("actionsstrator", new fr.heavencube.actionsstrator.commands.KillCommand(apiClient));
 
         // Fetch and display server information
         apiClient.getServerInfo().thenAccept(serverInfo -> {
@@ -32,6 +32,7 @@ public class ActionsStrator extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        // Cleanup if needed
     }
 
     public MineStratorClient getApiClient() {

@@ -1,11 +1,12 @@
 package fr.heavencube.actionsstrator.commands;
 
+import fr.heavencube.actionsstrator.api.MineStratorClient;
+import fr.heavencube.actionsstrator.utils.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
-import fr.heavencube.actionsstrator.api.MineStratorClient;
-import fr.heavencube.actionsstrator.utils.Messages;
 
 public class KillCommand extends Command {
 
@@ -19,7 +20,7 @@ public class KillCommand extends Command {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-        if (!sender.hasPermission("actionsstrator.kill")) { Messages.send(sender, Messages.NO_PERMISSION);return true;}
+        if (!sender.hasPermission("actionsstrator.kill")) { Messages.send(sender, Messages.NO_PERMISSION); return true; }
 
         Messages.send(sender, Messages.KILL_SENDING);
         client.sendPowerAction("kill").thenAccept(success -> {
