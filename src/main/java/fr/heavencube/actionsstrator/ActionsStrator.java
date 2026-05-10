@@ -2,7 +2,7 @@ package fr.heavencube.actionsstrator;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import fr.heavencube.actionsstrator.api.MineStratorClient;
-import fr.heavencube.actionsstrator.commands.CommandRegistry;
+import fr.heavencube.actionsstrator.utils.CommandRegistry;
 
 public class ActionsStrator extends JavaPlugin {
     private MineStratorClient apiClient;
