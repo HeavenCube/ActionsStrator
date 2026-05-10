@@ -16,10 +16,8 @@ public class ActionsStrator extends JavaPlugin {
 
         apiClient = new MineStratorClient(apiKey, serverId, getLogger());
 
-        getServer().getCommandMap().register("actionsstrator",
-                new fr.heavencube.actionsstrator.commands.RestartCommand(apiClient));
-        getServer().getCommandMap().register("actionsstrator",
-                new fr.heavencube.actionsstrator.commands.StopCommand(apiClient));
+        getServer().getCommandMap().register("actionsstrator",new fr.heavencube.actionsstrator.commands.RestartCommand(apiClient));
+        getServer().getCommandMap().register("actionsstrator",new fr.heavencube.actionsstrator.commands.StopCommand(apiClient));
     }
 
     @Override
