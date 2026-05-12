@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "2.3.21"
+    kotlin("jvm") version "2.4.0-Beta2"
 }
 
 kotlin {
@@ -8,11 +8,11 @@ kotlin {
 
 // Change to true when releasing
 val release = false
-val majorVersion = "1.0.0"
-val minorVersion = if (release) "Release" else "SNAPSHOT-" + (System.getenv("BUILD_NUMBER") ?: "local")
+val majorVersion = "0.0.1"
+val minorVersion = if (release) "" else "-beta-" + (System.getenv("BUILD_NUMBER") ?: "localbuild")
+version = "v$majorVersion$minorVersion"
 
 group = "fr.heavencube.actionsstrator"
-version = "$majorVersion-$minorVersion"
 
 repositories {
   maven {
@@ -27,7 +27,7 @@ dependencies {
 
 tasks {
     jar {
-        archiveFileName.set("ActionsStrator-${rootProject.version}.jar")
+        archiveFileName.set("${rootProject.name}-${rootProject.version}.jar")
     }
     processResources {
         val pluginVersion = rootProject.version.toString()
