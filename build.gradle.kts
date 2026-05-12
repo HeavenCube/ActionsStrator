@@ -9,8 +9,8 @@ kotlin {
 // Change to true when releasing
 val release = false
 val majorVersion = "0.0.1"
-val minorVersion = if (release) "" else "-beta-" + (System.getenv("BUILD_NUMBER") ?: "localbuild")
-version = "v$majorVersion$minorVersion"
+val minorVersion = if (release) "stable" else "beta-" + (System.getenv("BUILD_NUMBER") ?: "localbuild")
+version = "$majorVersion-$minorVersion"
 
 group = "fr.heavencube.actionsstrator"
 
@@ -27,12 +27,12 @@ dependencies {
 
 tasks {
     jar {
-        archiveFileName.set("${rootProject.name}-${rootProject.version}.jar")
+        archiveFileName.set("${rootProject.name}-v${rootProject.version}.jar")
     }
     processResources {
         val pluginVersion = rootProject.version.toString()
         inputs.property("version", pluginVersion)
-        filesMatching("paper-plugin.yml") {
+        filesMatching("plugin.yml") {
             expand("version" to pluginVersion)
         }
     }
