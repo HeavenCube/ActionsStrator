@@ -1,5 +1,5 @@
 name: ActionsStrator
-version: "${rootProject.version}"
+version: ${version}
 main: "fr.heavencube.actionsstrator.ActionsStrator"
 api-version: "1.21"
 description: A Paper plugin that uses the MineStrator API to manage the server.
