@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "2.4.0-Beta2"
+    kotlin("jvm") version "2.4.0-RC"
 }
 
 kotlin {
@@ -10,9 +10,9 @@ kotlin {
 val release = false
 val majorVersion = "0.0.1"
 val minorVersion = if (release) "stable" else "beta-" + (System.getenv("BUILD_NUMBER") ?: "localbuild")
-version = "$majorVersion-$minorVersion"
 
 group = "fr.heavencube.actionsstrator"
+version = "$majorVersion-$minorVersion"
 
 repositories {
   maven {
@@ -27,13 +27,13 @@ dependencies {
 
 tasks {
     jar {
-        archiveFileName.set("${rootProject.name}-v${rootProject.version}.jar")
+        archiveFileName.set("${rootProject.name} v${rootProject.version}.jar")
     }
     processResources {
-        val pluginVersion = rootProject.version.toString()
-        inputs.property("version", pluginVersion)
-        filesMatching("plugin.yml") {
-            expand("version" to pluginVersion)
+        val expandProps = mapOf("version" to project.version.toString())
+        inputs.properties(expandProps)
+        filesMatching("paper-plugin.yml") {
+            expand(expandProps)
         }
     }
 }
