@@ -6,7 +6,7 @@ kotlin {
     jvmToolchain(25)
 }
 
-// Change to true when releasing
+// Change to "true" when official release is out!
 val release = false
 val majorVersion = "0.0.1"
 val minorVersion = if (release) "stable" else "beta-" + (System.getenv("BUILD_NUMBER") ?: "localbuild")
