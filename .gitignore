@@ -1,122 +1,479 @@
-# User-specific stuff
-.idea/
-.vscode/
-bin/
-.instructions.md
+# ============================================================
+# Java / Kotlin / JVM
+# ============================================================
 
-*.iml
-*.ipr
-*.iws
-
-# IntelliJ
-out/
-# mpeltonen/sbt-idea plugin
-.idea_modules/
-
-# JIRA plugin
-atlassian-ide-plugin.xml
-
-# Compiled class file
 *.class
-
-# Log file
 *.log
-
-# BlueJ files
 *.ctxt
+*.hprof
 
-# Package Files #
+# Packaged artifacts
 *.jar
 *.war
 *.nar
 *.ear
 *.zip
+*.tar
 *.tar.gz
-*.rar
+*.tgz
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# Keep wrapper JARs versioned
+!gradle/wrapper/gradle-wrapper.jar
+!.mvn/wrapper/maven-wrapper.jar
+
+# JVM crash logs
 hs_err_pid*
+replay_pid*
+java_error_in_*.log
 
-*~
+# ============================================================
+# Gradle
+# ============================================================
 
-# temporary files which can be created if a process still has a handle open of a deleted file
-.fuse_hidden*
+.gradle/
+build/
+out/
 
-# KDE directory preferences
-.directory
+# Gradle local files
+gradle-app.setting
+gradle.properties.local
+gradle-local.properties
 
-# Linux trash folder which might appear on any partition or disk
-.Trash-*
+# Gradle Kotlin DSL / generated accessors cache
+.gradle-kotlin-dsl/
+.kotlin/
 
-# .nfs files are created when an open file is removed but is still being accessed
-.nfs*
+# Gradle build scans / reports generated locally
+buildSrc/build/
+**/build/
 
-# General
-.DS_Store
-.AppleDouble
-.LSOverride
+# Do NOT ignore these:
+# gradlew
+# gradlew.bat
+# gradle/wrapper/gradle-wrapper.properties
+# gradle/libs.versions.toml
+# settings.gradle
+# settings.gradle.kts
+# build.gradle
+# build.gradle.kts
 
-# Icon must end with two \r
-Icon
+# ============================================================
+# Maven
+# ============================================================
 
-# Thumbnails
-._*
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+.flattened-pom.xml
 
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
+# Maven local wrapper temporary files
+.mvn/timing.properties
 
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
+# Do NOT ignore these:
+# mvnw
+# mvnw.cmd
+# .mvn/wrapper/maven-wrapper.properties
+# pom.xml
 
-# Windows thumbnail cache files
+# ============================================================
+# Kotlin
+# ============================================================
+
+*.kotlin_module
+.kotlin/
+kotlin-js-store/
+
+# ============================================================
+# IntelliJ IDEA / JetBrains
+# ============================================================
+
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# IntelliJ output
+out/
+
+# IntelliJ local tasks / shelves
+.idea_modules/
+.shelf/
+
+# ============================================================
+# VS Code
+# ============================================================
+
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+!.vscode/tasks.example.json
+!.vscode/launch.example.json
+
+.history/
+
+# ============================================================
+# Eclipse / STS
+# ============================================================
+
+.project
+.classpath
+.settings/
+.springBeans
+.sts4-cache/
+bin/
+
+# ============================================================
+# NetBeans
+# ============================================================
+
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# ============================================================
+# Operating system files
+# ============================================================
+
+# Windows
 Thumbs.db
 Thumbs.db:encryptable
 ehthumbs.db
 ehthumbs_vista.db
-
-# Dump file
-*.stackdump
-
-# Folder config file
-[Dd]esktop.ini
-
-# Recycle Bin used on file shares
+Desktop.ini
 $RECYCLE.BIN/
-
-# Windows Installer files
 *.cab
 *.msi
 *.msix
 *.msm
 *.msp
-
-# Windows shortcuts
 *.lnk
 
-.gradle
-build/
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
 
-# Ignore Gradle GUI config
-gradle-app.setting
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
 
-# Cache of project
-.gradletasknamecache
+# ============================================================
+# Temporary / cache files
+# ============================================================
 
-**/build/
+tmp/
+temp/
+.tmp/
+.cache/
+*.tmp
+*.temp
+*.bak
+*.backup
+*.swp
+*.swo
+*.orig
 
-# Common working directory
+# ============================================================
+# Logs
+# ============================================================
+
+logs/
+*.log
+*.log.*
+debug.log
+error.log
+
+# ============================================================
+# Environment / secrets
+# ============================================================
+
+.env
+.env.*
+!.env.example
+!.env.template
+
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+secrets/
+secret/
+credentials/
+credentials.json
+service-account.json
+
+# ============================================================
+# Local configuration
+# ============================================================
+
+local.properties
+application-local.properties
+application-local.yml
+application-local.yaml
+config.local.yml
+config.local.yaml
+settings.local.yml
+settings.local.yaml
+
+# ============================================================
+# Testing / coverage
+# ============================================================
+
+test-results/
+reports/
+coverage/
+jacoco/
+jacoco.exec
+*.exec
+
+# JUnit / test artifacts
+TEST-*.xml
+
+# ============================================================
+# Docker / local runtime
+# ============================================================
+
+docker-compose.override.yml
+.docker/
+docker-data/
+
+# ============================================================
+# Minecraft plugin development
+# ============================================================
+
+# Local test servers
 run/
-runs/
+.rundata/
+test-server/
+dev-server/
+local-server/
+paper-server/
+spigot-server/
+purpur-server/
+velocity-server/
+waterfall-server/
+bungeecord-server/
 
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-!gradle-wrapper.jar
+# Root-level Minecraft server runtime files
+/eula.txt
+/server.properties
+/bukkit.yml
+/spigot.yml
+/paper.yml
+/purpur.yml
+/commands.yml
+/permissions.yml
+/help.yml
+/ops.json
+/whitelist.json
+/banned-players.json
+/banned-ips.json
+/usercache.json
+
+# Root-level Minecraft worlds
+/world/
+/world_nether/
+/world_the_end/
+/worlds/
+
+# Minecraft runtime folders
+/cache/
+/libraries/
+/versions/
+/crash-reports/
+/logs/
+/plugins/update/
+/plugins/PluginMetrics/
+/plugins/bStats/
+
+# Paper / Spigot / Velocity generated files
+/paperclip.jar
+/spigot.jar
+/craftbukkit.jar
+/velocity.jar
+/proxy.log*
+
+# Minecraft profiling / timings
+/timings/
+/spark/
+/spark-reports/
+
+# ============================================================
+# Build tool outputs that may appear in plugin repos
+# ============================================================
+
+/libs/
+/generated/
+/generated-sources/
+/generated-test-sources/
+
+# Keep source/resource folders tracked even if similarly named
+!src/**/generated/
+!src/**/resources/
+
+# ============================================================
+# Git / merge tools
+# ============================================================
+
+*.rej
+*.orig
+
+# ============================================================
+# AI assistants / local AI instructions / generated context
+# ============================================================
+
+# Generic AI instruction files
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+COPILOT.md
+CODEX.md
+CURSOR.md
+WINDSURF.md
+QWEN.md
+AI.md
+
+# Local or private AI instructions
+.ai/
+.ai-context/
+.ai-instructions/
+.ai-prompts/
+.ai-rules/
+.ai-memory/
+.ai-cache/
+.ai-generated/
+
+ai/
+ai-context/
+ai-instructions/
+ai-prompts/
+ai-rules/
+ai-memory/
+ai-cache/
+ai-generated/
+
+# Prompt / instruction drafts
+prompts/
+.prompt/
+.prompts/
+instructions/
+.instructions/
+agent-instructions/
+.agent-instructions/
+context/
+.context/
+
+*.prompt
+*.prompts
+*.prompt.md
+*.prompts.md
+*.instructions
+*.instructions.md
+*.context
+*.context.md
+
+# ChatGPT / Codex / OpenAI local files
+.chatgpt/
+.openai/
+.codex/
+codex/
+codex.md
+codex-instructions.md
+openai.md
+chatgpt.md
+chatgpt-instructions.md
+
+# Claude / Anthropic local files
+.claude/
+claude/
+claude.md
+claude-instructions.md
+claude-context.md
+
+# Gemini local files
+.gemini/
+gemini/
+gemini.md
+gemini-instructions.md
+
+# Cursor local files
+.cursor/
+cursor/
+cursor.md
+cursor-instructions.md
+.cursorrules
+
+# Windsurf local files
+.windsurf/
+windsurf/
+windsurf.md
+windsurf-instructions.md
+.windsurfrules
+
+# GitHub Copilot local instruction files
+.github/copilot-instructions.md
+.github/instructions/
+.github/prompts/
+
+# Aider
+.aider*
+aider.chat.history.md
+aider.input.history
+.aider.chat.history.md
+.aider.input.history
+.aider.conf.yml
+.aider.conf.yaml
+
+# Continue.dev
+.continue/
+continue/
+
+# Tabby / Codeium / other local assistants
+.tabby/
+.codeium/
+.supermaven/
+sourcegraph-cody/
+.cody/
+
+# Local model/runtime files
+models/
+.model/
+.models/
+llm/
+.llm/
+ollama/
+.ollama/
+
+*.gguf
+*.ggml
+*.safetensors
+*.onnx
+*.pt
+*.pth
+*.bin
+
+# AI-generated temporary outputs
+generated-by-ai/
+ai-output/
+ai-outputs/
+ai-generated/
+.generated-by-ai/
+.ai-output/
+.ai-outputs/
