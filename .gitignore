@@ -107,6 +107,7 @@ out/
 # VS Code
 # ============================================================
 
+.vscode/
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.example.json
