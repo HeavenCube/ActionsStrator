@@ -1,0 +1,34 @@
+version: 2
+
+updates:
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "06:00"
+      timezone: "Europe/Paris"
+    open-pull-requests-limit: 20
+    rebase-strategy: "auto"
+    labels:
+      - "dependencies"
+      - "gradle"
+      - "java"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+
+  - package-ecosystem: "github-actions"
+    directory: /
+    schedule:
+      interval: "daily"
+      time: "06:00"
+      timezone: "Europe/Paris"
+    open-pull-requests-limit: 10
+    rebase-strategy: "auto"
+    labels:
+      - "dependencies"
+      - "github-actions"
+
+    commit-message:
+      prefix: "deps(actions)"
+      include: "scope"
